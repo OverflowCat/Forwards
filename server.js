@@ -58,12 +58,12 @@ bot.on('message', (ctx) => {
     i => console.log(i)
 });
   var t = ctx.message.text;
-  if (t == "/start")ctx.replyWithHTML('欢迎使用 @OverflowCat 的词典 bot。词典数据来源<b>有道</b>。输入单词即可查询；输入整句可以进行翻译。\n<a href="github.com/OverflowCat/Forwords/">Github repo</a>\n如果你想要查询近义词，可以使用 Forword Bot ʟᴇɢᴀᴄʏ @forwordybot')
+  if (t == "/start"){return ctx.replyWithHTML('欢迎使用 @OverflowCat 的词典 bot。词典数据来源<b>有道</b>。输入单词即可查询；输入整句可以进行翻译。\n<a href="github.com/OverflowCat/Forwords/">Github repo</a>\n如果你想要查询近义词，可以使用 Forword Bot ʟᴇɢᴀᴄʏ @forwordybot')}
   
   (/^[a-zA-Z]+$/).test(t) ? d.iciba(ctx) : gtranslate(ctx)
 })
 ///^[a-zA-Z]+$/.test(t) 
-bot.command("start", (ctx) => ctx.reply("欢迎使用 @OverflowCat 的词典 bot。词典数据来源有道。输入单词即可查询；输入整句可以进行翻译。\nGitHub repo github.com/OverflowCat/Forwords\n如果你想要查询近义词，可以使用Forword Bot ʟᴇɢᴀᴄʏ @forwordybot"))
+//1bot.command("start", (ctx) => ctx.reply("欢迎使用 @OverflowCat 的词典 bot。词典数据来源有道。输入单词即可查询；输入整句可以进行翻译。\nGitHub repo github.com/OverflowCat/Forwords\n如果你想要查询近义词，可以使用Forword Bot ʟᴇɢᴀᴄʏ @forwordybot"))
 bot.launch()  
 
 const http = require('http');

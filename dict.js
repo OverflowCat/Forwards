@@ -47,12 +47,9 @@ function iciba(ctx) {
         var ex = unescape(explanations.replace(/&#x/g, '%u').replace(/;/g, '')).trim()
         if (ex.indexOf("<ul>") != -1) ex = ''
         console.log(ex,eg)
-        var reply = ex + "\n►网络释义\n" + netex 
-        if(eg) reply += "\n►例句\n" + eg
-        const extra = require('telegraf/extra')
-        const md = extra.markdown()
-
-        ctx.reply(reply)
+        var reply = "<code>" + ex +  "</code>" + "\n\n<b>►网络释义</b>\n" + netex 
+        if(eg) reply += "<b>\n\n►例句\n</b>" + eg 
+        ctx.replyWithHTML(reply)
       }
       done();
     }
