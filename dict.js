@@ -33,13 +33,14 @@ function iciba(ctx) {
         var netex = netexplanations.text().replace(/\s/g, ' ').trim()
         var eg = listtrans.slice(1).text().trim().split("\n").map(i => {
           i = i.trim()
-          const srcURLre = /[^a-zA-Z][a-zA-Z0-9.]+\.[a-zA-Z]{2,}$/gmu
+          const srcURLre = /[^a-zA-Z0-9-_.][a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/gmu
           var match = i.match(srcURLre)
           if(match){match = match[0]}else{var match = ""}
           i = i.replace(srcURLre, '') + match.substring(0, 1)
           var dot = i.indexOf('.')
           if (dot >= 1) i = insertStr(i, i.indexOf('.') + 1, ' ').trim()
-   return i     }).join('\n').trim()
+          return i
+        }).join('\n').trim()
         var explanations = $("div.content").slice(0, 1).html().split(' ').join('').split("\n").join('').split('<br>').map(i => {
           return (insertStr(i, i.indexOf(".") + 1, " ").trim())
         }).join('\n')

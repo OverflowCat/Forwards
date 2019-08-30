@@ -5,10 +5,16 @@ const d = require("./dict")
 //var wordfreq = fs.readFileSync('wordfreq.txt');
 const bot = new Telegraf(process.env.BOT_TOKEN)
 //d.iciba("ingress")
-function gtranslate(ctx){
+function gtranslate(ctx, lang){
+  var repeat = false
+  if(!lang) {
+    var lang = 'en'
+    var repeat = true
+    }
   var o
-  gt(ctx.message.text, { to: 'en' }).then(res => {
+  gt(ctx.message.text, { to: lang }).then(res => {
   //ctx.reply(ctx.message)
+  if (res.text == ctx.message.text && repeat) return gtranslate(ctx, "zh-CN")
   ctx.reply(res.text)
 }).catch(err => {
   ctx.reply(err)
