@@ -4,6 +4,12 @@ Array.prototype.insert = function (index, item) {
   return this.splice(index, 0, item)
 }
 
+Array.prototype.max = function () {
+  var max = this[0]; 
+  for (var i = 1; i < this.length; i++) if (this[i] > max) max = this[i]
+  return max
+}
+
 function insertStr(str, start, newStr){
   return str.substring(0, start) + newStr + str.substring(start)
 }
@@ -25,19 +31,20 @@ function iciba(ctx) {
         var listtrans = $("div.content#listtrans ul")
         var netexplanations = listtrans.slice(0, 1)
         var netex = netexplanations.text().replace(/\s/g, ' ').trim()
-        var eg = listtrans.slice(1).text().split("\n").map(i => {
+        var eg = listtrans.slice(1).text().trim().split("\n").map(i => {
           i = i.trim()
-          const srcURLre = "/[-A-Za-z0-9+:,.;]+[A-Za-z]$/"
-          i = i.replace(srcURLre, '')
-          i = insertStr(i, i.indexOf('.', ' ')).trim()
-          var index = i.lastIndexOf("。")
-          return index >= 0 ? i.substring(0, index ) : i
-        }).join('\n').trim()
+          const srcURLre = /[^a-zA-Z][a-zA-Z.]+\.[a-zA-Z]{2,}$/gmus
+          var match = i.match(srcURLre)
+          if(match){match = match[0]}else{var match = ""}
+          i = i.replace(srcURLre, '') + match.substring(0, 1)
+          var dot = i.indexOf('.')
+          if (dot >= 1) i = insertStr(i, i.indexOf('.') + 1, ' ').trim()
+   return i     }).join('\n').trim()
         var explanations = $("div.content").slice(0, 1).html().split(' ').join('').split("\n").join('').split('<br>').map(i => {
           return (insertStr(i, i.indexOf(".") + 1, " ").trim())
         }).join('\n')
         var ex = unescape(explanations.replace(/&#x/g, '%u').replace(/;/g, '')).trim()
-        //console.log(ex,eg, listtrans.slice(1).text())
+        console.log(ex,eg)
         var reply = ex + "\n►网络释义\n" + netex + "\n►例句\n" + eg
         const extra = require('telegraf/extra')
         const md = extra.markdown()
