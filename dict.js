@@ -33,7 +33,7 @@ function iciba(ctx) {
         var netex = netexplanations.text().replace(/\s/g, ' ').trim()
         var eg = listtrans.slice(1).text().trim().split("\n").map(i => {
           i = i.trim()
-          const srcURLre = /[^a-zA-Z0-9-_.][a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/gmu
+          const srcURLre = /[^a-zA-Z0-9-_.](https?:\/\/)?[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/gmu
           var match = i.match(srcURLre)
           if(match){match = match[0]}else{var match = ""}
           i = i.replace(srcURLre, '') + match.substring(0, 1)
