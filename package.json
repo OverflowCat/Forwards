@@ -13,7 +13,8 @@
     "@k3rn31p4nic/google-translate-api": "github:k3rn31p4nic/google-translate-api",
     "telegraf": "^3.32.0",
     "crawler": "^1.2.1",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "nedb": "^1.8.0"
   },
   "engines": {
     "node": "8.x"
