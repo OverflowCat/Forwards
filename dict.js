@@ -33,7 +33,7 @@ function iciba(ctx) {
         var netex = netexplanations.text().replace(/\s/g, ' ').trim()
         var eg = listtrans.slice(1).text().trim().split("\n").map(i => {
           i = i.trim()
-          const srcURLre = /[^a-zA-Z][a-zA-Z.]+\.[a-zA-Z]{2,}$/gmus
+          const srcURLre = /[^a-zA-Z][a-zA-Z0-9.]+\.[a-zA-Z]{2,}$/gmu
           var match = i.match(srcURLre)
           if(match){match = match[0]}else{var match = ""}
           i = i.replace(srcURLre, '') + match.substring(0, 1)
@@ -44,8 +44,10 @@ function iciba(ctx) {
           return (insertStr(i, i.indexOf(".") + 1, " ").trim())
         }).join('\n')
         var ex = unescape(explanations.replace(/&#x/g, '%u').replace(/;/g, '')).trim()
+        if (ex.indexOf("<ul>") != -1) ex = ''
         console.log(ex,eg)
-        var reply = ex + "\n►网络释义\n" + netex + "\n►例句\n" + eg
+        var reply = ex + "\n►网络释义\n" + netex 
+        if(eg) reply += "\n►例句\n" + eg
         const extra = require('telegraf/extra')
         const md = extra.markdown()
 

@@ -25,6 +25,7 @@ bot.on('message', (ctx) => {
   /^[a-zA-Z]+$/.test(t) ? d.iciba(ctx) : gtranslate(ctx)
 })
 ///^[a-zA-Z]+$/.test(t) 
+bot.command("start", (ctx) => ctx.reply(""))
 bot.launch()  
 
 const http = require('http');
