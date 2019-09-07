@@ -55,6 +55,35 @@ function iciba(ctx) {
     }
   });
 }
+
+function manchu(ctx){
+  var t = ctx.message.text
+  t = t.substr(7,)
+  c.queue({
+    uri: "http://manchu.work/dicts/search?_token=53Rv7MJZK2qwxpJe5eG5BOhozWfyKwhzJMQDzeqF&word=" + "&search_type=&type=",
+    callback: function (error, res, done) {
+      if (error) {
+        console.log(error)
+      } else {
+        var $ = res.$
+        var wraps = $("div.content-wrap")
+        var o = []
+        wraps.each((i, item) => {
+      
+          o[i] = $(item).children("div").text()
+          o[i] += " <code>" + $(item).children("div").text() + "</code>"
+          })
+      
+        ctx.replyWithHTML(o.join('\n'))
+      }
+    }
+  }
+  )
+  
+  
+}
+
 module.exports = {
-  iciba
+  iciba,
+  manchu
 }
