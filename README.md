@@ -2,7 +2,7 @@ Forwords X
 =================
 Another telegram dictionary bot on Node.
 
-
+![n1GI2D.png](https://s2.ax1x.com/2019/09/07/n1GI2D.png)
 
 
 Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
