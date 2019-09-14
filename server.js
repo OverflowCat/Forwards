@@ -12,14 +12,17 @@ const db = new nedb({
   filename: './log.db',
   autoload: true
 });
- var doc = { today: new Date(),
-            r: "start"
-               };
-db.findOne({ r: "start" }, function (err, docs) {
+var doc = {
+  today: new Date(),
+  r: "start"
+};
+db.findOne({
+  r: "start"
+}, function (err, docs) {
   // If no document is found, docs is equal to []
   console.log(docs, "found!")
 });
-db.insert(doc, function (err, newDoc) {   
+db.insert(doc, function (err, newDoc) {
   console.log(newDoc)
 });
 // 插入单项
@@ -27,92 +30,113 @@ db.insert(doc, function (err, newDoc) {
 //  name: 'tom'
 //}, (err, ret) => {});
 //d.iciba("ingress")
-function gtranslate(ctx, lang){
+function gtranslate(ctx, lang) {
   var repeat = false
-  if(!lang) {
+  if (!lang) {
     var lang = 'en'
     var repeat = true
-    }
+  }
   var o
-  gt(ctx.message.text, { to: lang }).then(res => {
-  //ctx.reply(ctx.message)
-  if (res.text == ctx.message.text && repeat) return gtranslate(ctx, "zh-CN")
-  ctx.reply(res.text)
-}).catch(err => {
-  ctx.reply(err)
-  
-});
+  gt(ctx.message.text, {
+    to: lang
+  }).then(res => {
+    //ctx.reply(ctx.message)
+    if (res.text == ctx.message.text && repeat) return gtranslate(ctx, "zh-CN")
+    ctx.reply(res.text)
+  }).catch(err => {
+    ctx.reply(err)
+
+  });
   console.log(ctx.message)
 }
 
-bot.on('inline_query', 
-       async ({ inlineQuery, answerInlineQuery }) => {
-  const q = inlineQuery.query
-  async.parallel({
-    youdao:function(done){
-      if (!(/^[a-zA-Z]+$/).test(q)){
-        done(null, undefined)
-      }else{
-        d.asyncYoudao(q, (result)=>{
-          const o = {
-    type: "article"
-    ,id: Math.random()
-    ,title: "Youdao Dictionary"
-    ,description: result.replace(/<[^>]+>/g, '')
-    ,input_message_content: {
-      message_text: result
-      ,parse_mode: "HTML"
-    }
-                   }
-          done(null, o)
-        
-        })}
-        
-    },
-    toEN:function(done){
-      try{
-        gt(q, { to: "en" }).then(res => {
-     const o = {
-    type: "article"
-    ,id: Math.random()
-    ,title: "Translate to English"
-    ,description: res.text
-    ,input_message_content: {
-      message_text: res.text
-    }
-     }
-          done(null, o)
-        })
-      }catch(err){}
-    },
-    toCN:function(done){try{
-        gt(q, { to: "zh-CN" }).then(res => {
-          const o = {
-    type: "article"
-    ,id: Math.random()
-    ,title: "Translate to Simplified Chinese"
-    ,description: res.text
-    ,input_message_content: {
-      message_text: res.text
-    }
-          }
-          done(null, o)
-        })
-    }catch(err){
+bot.on('inline_query',
+  async({
+    inlineQuery,
+    answerInlineQuery
+  }) => {
+    const q = inlineQuery.query
+    async.parallel({
+      youdao: function (done) {
+        if (!(/^[a-zA-Z]+$/).test(q)) {
+          done(null, undefined)
+        }
+        else {
+          d.asyncYoudao(q, (result) => {
+            const o = {
+              type: "article",
+              id: Math.random(),
+              title: "Youdao Dictionary",
+              description: result.replace(/<[^>]+>/g, ''),
+              input_message_content: {
+                message_text: result,
+                parse_mode: "HTML"
+              }
+            }
+            done(null, o)
+
+          })
+        }
+
+      },
       
-    }}
-},function(error,r){
-    
-    {
-      var results = [r.youdao]//, r.toEN, r.toCN]
-      results = results.filter(function (el) {
-  return el != undefined;
-});
-      return answerInlineQuery(results)
-    }
-        
-});
-})
+      toEN: function (done) {
+        if (false){
+        try {
+          gt(q, {
+            to: "en"
+          }).then(res => {
+            const o = {
+              type: "article",
+              id: Math.random(),
+              title: "Translate to English",
+              description: res.text,
+              input_message_content: {
+                message_text: res.text
+              }
+            }
+            done(null, o)
+          })
+        }
+        catch (err) {}
+        }done(null, undefined)
+      },
+      toCN: function (done) {
+        if (false){
+        try {
+          gt(q, {
+            to: "zh-CN"
+          }).then(res => {
+            const o = {
+              type: "article",
+              id: Math.random(),
+              title: "Translate to Simplified Chinese",
+              description: res.text,
+              input_message_content: {
+                message_text: res.text
+              }
+            }
+            done(null, o)
+          })
+        }
+        catch (err) {
+
+        }
+        }done(null, undefined)
+      }
+    }, function (error, r) {
+
+      {
+        var results = [r.youdao] //, r.toEN, r.toCN]
+        results = results.filter(function (el) {
+          return el != undefined;
+        });
+        console.log(results)
+        return answerInlineQuery(results)
+      }
+
+    });
+  })
 
 bot.help((ctx) => ctx.reply('Send me some foreign text.'))
 bot.on('sticker', (ctx) => ctx.reply('👍'))
@@ -123,18 +147,20 @@ bot.on('message', (ctx) => {
   }, {
     $push: {
       msg: ctx.message
-    } 
+    }
   }, {}, function () {
     i => console.log(i)
-});
+  });
   var t = ctx.message.text;
-  if (t == "/start"){return ctx.replyWithHTML('欢迎使用 @OverflowCat 的词典 bot。词典数据来源<b>有道</b>。输入单词即可查询；输入整句可以进行翻译。\n<a href="github.com/OverflowCat/Forwords/">Github repo</a>\n如果你想要查询近义词，可以使用 Forword Bot ʟᴇɢᴀᴄʏ @forwordybot')}
-  
+  if (t == "/start") {
+    return ctx.replyWithHTML('欢迎使用 @OverflowCat 的词典 bot。词典数据来源<b>有道</b>。输入单词即可查询；输入整句可以进行翻译。\n<a href="github.com/OverflowCat/Forwords/">Github repo</a>\n如果你想要查询近义词，可以使用 Forword Bot ʟᴇɢᴀᴄʏ @forwordybot')
+  }
+
   (/^[a-zA-Z]+$/).test(t) ? d.iciba(ctx) : gtranslate(ctx)
 })
 ///^[a-zA-Z]+$/.test(t) 
 //1bot.command("start", (ctx) => ctx.reply("欢迎使用 @OverflowCat 的词典 bot。词典数据来源有道。输入单词即可查询；输入整句可以进行翻译。\nGitHub repo github.com/OverflowCat/Forwords\n如果你想要查询近义词，可以使用Forword Bot ʟᴇɢᴀᴄʏ @forwordybot"))
-bot.launch()  
+bot.launch()
 
 const http = require('http');
 const express = require('express');

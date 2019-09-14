@@ -5,12 +5,13 @@ Array.prototype.insert = function (index, item) {
 }
 
 Array.prototype.max = function () {
-  var max = this[0]; 
-  for (var i = 1; i < this.length; i++) if (this[i] > max) max = this[i]
+  var max = this[0];
+  for (var i = 1; i < this.length; i++)
+    if (this[i] > max) max = this[i]
   return max
 }
 
-function insertStr(str, start, newStr){
+function insertStr(str, start, newStr) {
   return str.substring(0, start) + newStr + str.substring(start)
 }
 
@@ -26,7 +27,8 @@ function iciba(ctx) {
     callback: function (error, res, done) {
       if (error) {
         console.log(error)
-      } else {
+      }
+      else {
         var $ = res.$
         var listtrans = $("div.content#listtrans ul")
         var netexplanations = listtrans.slice(0, 1)
@@ -35,7 +37,12 @@ function iciba(ctx) {
           i = i.trim()
           const srcURLre = /[^a-zA-Z0-9-_.](https?:\/\/)?[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/gmu
           var match = i.match(srcURLre)
-          if(match){match = match[0]}else{var match = ""}
+          if (match) {
+            match = match[0]
+          }
+          else {
+            var match = ""
+          }
           i = i.replace(srcURLre, '') + match.substring(0, 1)
           var dot = i.indexOf('.')
           if (dot >= 1) i = insertStr(i, i.indexOf('.') + 1, ' ').trim()
@@ -47,8 +54,8 @@ function iciba(ctx) {
         var ex = unescape(explanations.replace(/&#x/g, '%u').replace(/;/g, '')).trim()
         if (ex.indexOf("<ul>") != -1) ex = ''
         //console.log(ex,eg)
-        var reply = "<code>" + ex +  "</code>" + "\n\n<b>►网络释义</b>\n" + netex 
-        if(eg) reply += "<b>\n\n►例句\n</b>" + eg 
+        var reply = "<code>" + ex + "</code>" + "\n\n<b>►网络释义</b>\n" + netex
+        if (eg) reply += "<b>\n\n►例句\n</b>" + eg
         ctx.replyWithHTML(reply)
       }
       done();
@@ -57,57 +64,61 @@ function iciba(ctx) {
 }
 
 
-
-
-
 function crawlerPromise(options) {
-    return new Promise((resolve, reject) => {
-        options.callback = (err, res, done) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(res);
-            }
-            done();
-        }
-        c.queue(options);
-    });
+  return new Promise((resolve, reject) => {
+    options.callback = (err, res, done) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve(res);
+      }
+      done();
+    }
+    c.queue(options);
+  });
 }
 
-function  asyncYoudao(w, callback){
-crawlerPromise({ 
-  uri: "http://dict.youdao.com/m/search?keyfrom=dict.mresult&q=" + w
-})
+function asyncYoudao(w, callback) {
+  crawlerPromise({
+      uri: "http://dict.youdao.com/m/search?keyfrom=dict.mresult&q=" + w
+    })
     .then((res) => {
-  //doStuff(res)
-  var $ = res.$
-        var listtrans = $("div.content#listtrans ul")
-        var netexplanations = listtrans.slice(0, 1)
-        var netex = netexplanations.text().replace(/\s/g, ' ').trim()
-        var eg = listtrans.slice(1).text().trim().split("\n").map(i => {
-          i = i.trim()
-          const srcURLre = /[^a-zA-Z0-9-_.](https?:\/\/)?[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/gmu
-          var match = i.match(srcURLre)
-          if(match){match = match[0]}else{var match = ""}
-          i = i.replace(srcURLre, '') + match.substring(0, 1)
-          var dot = i.indexOf('.')
-          if (dot >= 1) i = insertStr(i, i.indexOf('.') + 1, ' ').trim()
-          return i
-        }).join('\n').trim()
-        var explanations = $("div.content").slice(0, 1).html().split(' ').join('').split("\n").join('').split('<br>').map(i => {
-          return (insertStr(i, i.indexOf(".") + 1, " ").trim())
-        }).join('\n')
-        var ex = unescape(explanations.replace(/&#x/g, '%u').replace(/;/g, '')).trim()
-        if (ex.indexOf("<ul>") != -1) ex = ''
-        var reply = "<code>" + ex +  "</code>" + "\n\n<b>►网络释义</b>\n" + netex 
-        if(eg) reply += "<b>\n\n►例句\n</b>" + eg 
-        //ctx.replyWithHTML(reply)
-  return callback(reply)
-  
-  
-  
-                   })
-    .catch((error) => {console.log(error)});
+      //doStuff(res)
+      var $ = res.$
+      var listtrans = $("div.content#listtrans ul")
+      var netexplanations = listtrans.slice(0, 1)
+      var netex = netexplanations.text().replace(/\s/g, ' ').trim()
+      var eg = listtrans.slice(1).text().trim().split("\n").map(i => {
+        i = i.trim()
+        const srcURLre = /[^a-zA-Z0-9-_.](https?:\/\/)?[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/gmu
+        var match = i.match(srcURLre)
+        if (match) {
+          match = match[0]
+        }
+        else {
+          var match = ""
+        }
+        i = i.replace(srcURLre, '') + match.substring(0, 1)
+        var dot = i.indexOf('.')
+        if (dot >= 1) i = insertStr(i, i.indexOf('.') + 1, ' ').trim()
+        return i
+      }).join('\n').trim()
+      var explanations = $("div.content").slice(0, 1).html().split(' ').join('').split("\n").join('').split('<br>').map(i => {
+        return (insertStr(i, i.indexOf(".") + 1, " ").trim())
+      }).join('\n')
+      var ex = unescape(explanations.replace(/&#x/g, '%u').replace(/;/g, '')).trim()
+      if (ex.indexOf("<ul>") != -1) ex = ''
+      var reply = "<code>" + ex + "</code>" + "\n\n<b>►网络释义</b>\n" + netex
+      if (eg) reply += "<b>\n\n►例句\n</b>" + eg
+      //ctx.replyWithHTML(reply)
+      return callback(reply)
+
+
+    })
+    .catch((error) => {
+      console.log(error)
+    });
 }
 
 module.exports = {
