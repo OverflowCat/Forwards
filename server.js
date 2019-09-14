@@ -5,10 +5,7 @@ const d = require("./dict")
 //var wordfreq = fs.readFileSync('wordfreq.txt');
 const bot = new Telegraf(process.env.BOT_TOKEN)
 const nedb = require('nedb');
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-sleep(8555) 
+
 // 实例化连接对象（不带参数默认为内存数据库）
 const db = new nedb({
   filename: './log.db',
@@ -21,6 +18,14 @@ db.findOne({ r: "start" }, function (err, docs) {
   // If no document is found, docs is equal to []
   console.log(docs, "found!")
 });
+db.insert(doc, function (err, newDoc) {   
+  console.log(newDoc)
+});
+// 插入单项
+//db.insert({
+//  name: 'tom'
+//}, (err, ret) => {});
+//d.iciba("ingress")
 function gtranslate(ctx, lang){
   var repeat = false
   if(!lang) {
@@ -39,9 +44,20 @@ function gtranslate(ctx, lang){
   console.log(ctx.message)
 }
 
+bot.on('inline_query', async ({ inlineQuery, answerInlineQuery }) => {
+  const results = [{type: "article"
+    ,id: Math.random()
+    ,title: "Youdao Dictionary"
+    ,input_message_content: {
+      message_text: "good"
+      ,parse_mode: "HTML"
+    }
+                   }]
+        // [{"id": "1", "input _message_content": {"message_text": "Hello"}}]
+  return answerInlineQuery(results)
+})
 
 bot.help((ctx) => ctx.reply('Send me some foreign text.'))
-bot.command("manchu", (ctx) => d.manchu(ctx))
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 bot.on('message', (ctx) => {
