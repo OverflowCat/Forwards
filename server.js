@@ -21,6 +21,9 @@ db.findOne({ r: "start" }, function (err, docs) {
   // If no document is found, docs is equal to []
   console.log(docs, "found!")
 });
+function handleText(){
+ // (/^[a-zA-Z]+$/).test(t) ? d.iciba(ctx) : gtranslate(ctx)
+}
 function gtranslate(ctx, lang){
   var repeat = false
   if(!lang) {
@@ -57,11 +60,52 @@ bot.on('message', (ctx) => {
   var t = ctx.message.text;
   if (t == "/start"){return ctx.replyWithHTML('欢迎使用 @OverflowCat 的词典 bot。词典数据来源<b>有道</b>。输入单词即可查询；输入整句可以进行翻译。\n<a href="github.com/OverflowCat/Forwords/">Github repo</a>\n如果你想要查询近义词，可以使用 Forword Bot ʟᴇɢᴀᴄʏ @forwordybot')}
   
-  (/^[a-zA-Z]+$/).test(t) ? d.iciba(ctx) : gtranslate(ctx)
+  (/^[a-zA-Z]+$/).test(t) ? d.youdaom(ctx) : gtranslate(ctx)
 })
 ///^[a-zA-Z]+$/.test(t) 
 //1bot.command("start", (ctx) => ctx.reply("欢迎使用 @OverflowCat 的词典 bot。词典数据来源有道。输入单词即可查询；输入整句可以进行翻译。\nGitHub repo github.com/OverflowCat/Forwords\n如果你想要查询近义词，可以使用Forword Bot ʟᴇɢᴀᴄʏ @forwordybot"))
-bot.launch()  
+
+bot.on('inline_query', async ({ inlineQuery, answerInlineQuery }) => {
+  const r =[ {
+    type: "article"
+    ,id: "88"//t.substring(0, 63)
+    ,title: "@@"
+    ,input_message_content: {
+      message_text: "good"
+      ,parse_mode: "HTML"
+    }
+}]
+  var q = inlineQuery.query
+  q.map((item) => {
+if ( (/^[a-zA-Z]+$/).test(item) ){
+  let myFirstPromise = new Promise(function(resolve, reject){
+    
+});
+
+myFirstPromise.then(function(successMessage){
+    //successMessage的值是上面调用resolve(...)方法传入的值.
+    //successMessage参数不一定非要是字符串类型，这里只是举个例子
+    console.log("Yay! " + successMessage);
+})
+}else{
+  
+  const r =[ {
+    type: "article"
+    ,id: Math.random()
+    ,title: "Translation"
+    ,input_message_content: {
+      message_text: "good"
+      ,parse_mode: "HTML"
+    }
+  }]
+}
+    
+
+
+  return answerInlineQuery(r)
+})
+
+bot.launch()
 
 const http = require('http');
 const express = require('express');

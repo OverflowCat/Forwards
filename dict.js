@@ -19,8 +19,9 @@ var c = new CRAWLER({
   // This will be called for each crawled page
 })
 
-function iciba(ctx) {
-  var w = ctx.message.text
+function youdaom(ctx) {
+  var fetch = new Promise( function(resolve, reject) {
+  var w = ctx.message.text ? ctx.message.text : ctx
   c.queue({
     uri: "http://dict.youdao.com/m/search?keyfrom=dict.mresult&q=" + w,
     callback: function (error, res, done) {
@@ -49,13 +50,18 @@ function iciba(ctx) {
         console.log(ex,eg)
         var reply = "<code>" + ex +  "</code>" + "\n\n<b>►网络释义</b>\n" + netex 
         if(eg) reply += "<b>\n\n►例句\n</b>" + eg 
-        ctx.replyWithHTML(reply)
-      }
+        resolve(reply)
       done();
+      }
     }
-  });
+  })
+})
+  fetch.then(value => {
+    return (value)
+  })
 }
-
+            
+              
 function manchu(ctx){
   var t = ctx.message.text
   t = t.substr(7,)
@@ -84,6 +90,6 @@ function manchu(ctx){
 }
 
 module.exports = {
-  iciba,
+  youdaom,
   manchu
 }
