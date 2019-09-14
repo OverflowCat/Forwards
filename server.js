@@ -47,20 +47,71 @@ function gtranslate(ctx, lang){
 
 bot.on('inline_query', 
        async ({ inlineQuery, answerInlineQuery }) => {
-  
-  d.asyncYoudao(inlineQuery.query, (result)=>{
-    const results = [{type: "article"
+  const q = inlineQuery.query
+  async.parallel({
+    youdao:function(done){
+      if (!(/^[a-zA-Z]+$/).test(q)){
+        done(null, undefined)
+      }else{
+        d.asyncYoudao(q, (result)=>{
+          const o = {
+    type: "article"
     ,id: Math.random()
     ,title: "Youdao Dictionary"
+    ,description: result.replace(/<[^>]+>/g, '')
     ,input_message_content: {
       message_text: result
       ,parse_mode: "HTML"
     }
-                   }]
-        // [{"id": "1", "input _message_content": {"message_text": "Hello"}}]
-  return answerInlineQuery(results)
-  })
-  
+                   }
+          done(null, o)
+        
+        })}
+        
+    },
+    toEN:function(done){
+      try{
+        gt(q, { to: "en" }).then(res => {
+     const o = {
+    type: "article"
+    ,id: Math.random()
+    ,title: "Translate to English"
+    ,description: res.text
+    ,input_message_content: {
+      message_text: res.text
+    }
+     }
+          done(null, o)
+        })
+      }catch(err){}
+    },
+    toCN:function(done){try{
+        gt(q, { to: "zh-CN" }).then(res => {
+          const o = {
+    type: "article"
+    ,id: Math.random()
+    ,title: "Translate to Simplified Chinese"
+    ,description: res.text
+    ,input_message_content: {
+      message_text: res.text
+    }
+          }
+          done(null, o)
+        })
+    }catch(err){
+      
+    }}
+},function(error,r){
+    
+    {
+      var results = [r.youdao]//, r.toEN, r.toCN]
+      results = results.filter(function (el) {
+  return el != undefined;
+});
+      return answerInlineQuery(results)
+    }
+        
+});
 })
 
 bot.help((ctx) => ctx.reply('Send me some foreign text.'))

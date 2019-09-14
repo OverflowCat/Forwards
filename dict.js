@@ -46,7 +46,7 @@ function iciba(ctx) {
         }).join('\n')
         var ex = unescape(explanations.replace(/&#x/g, '%u').replace(/;/g, '')).trim()
         if (ex.indexOf("<ul>") != -1) ex = ''
-        console.log(ex,eg)
+        //console.log(ex,eg)
         var reply = "<code>" + ex +  "</code>" + "\n\n<b>►网络释义</b>\n" + netex 
         if(eg) reply += "<b>\n\n►例句\n</b>" + eg 
         ctx.replyWithHTML(reply)
@@ -99,7 +99,6 @@ crawlerPromise({
         }).join('\n')
         var ex = unescape(explanations.replace(/&#x/g, '%u').replace(/;/g, '')).trim()
         if (ex.indexOf("<ul>") != -1) ex = ''
-        console.log(ex,eg)
         var reply = "<code>" + ex +  "</code>" + "\n\n<b>►网络释义</b>\n" + netex 
         if(eg) reply += "<b>\n\n►例句\n</b>" + eg 
         //ctx.replyWithHTML(reply)
