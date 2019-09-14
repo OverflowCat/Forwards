@@ -1,5 +1,6 @@
 dependencies:
   '@k3rn31p4nic/google-translate-api': github.com/k3rn31p4nic/google-translate-api/220c50114b23823f1a68354260c12edd4bdc62f8
+  async: 3.1.0
   crawler: 1.2.1
   express: 4.17.1
   nedb: 1.8.0
@@ -61,6 +62,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-trvgsGdLnXGXCMo43owjfLUmw9E=
+  /async/3.1.0:
+    dev: false
+    resolution:
+      integrity: sha512-4vx/aaY6j/j3Lw3fbCHNWP0pPaTCew3F6F3hYyl/tHs/ndmV1q7NW9T5yuJ2XAGwdQrP+6Wu20x06U4APo/iQQ==
   /asynckit/0.4.0:
     dev: false
     resolution:
@@ -1183,6 +1188,7 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   '@k3rn31p4nic/google-translate-api': 'github:k3rn31p4nic/google-translate-api'
+  async: ^3.1.0
   crawler: ^1.2.1
   express: ^4.16.4
   nedb: ^1.8.0

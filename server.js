@@ -1,5 +1,6 @@
 const Telegraf = require('telegraf')
 const gt = require("@k3rn31p4nic/google-translate-api");
+var async = require('async');
 const fs = require("fs")
 const d = require("./dict")
 //var wordfreq = fs.readFileSync('wordfreq.txt');
@@ -44,17 +45,22 @@ function gtranslate(ctx, lang){
   console.log(ctx.message)
 }
 
-bot.on('inline_query', async ({ inlineQuery, answerInlineQuery }) => {
-  const results = [{type: "article"
+bot.on('inline_query', 
+       async ({ inlineQuery, answerInlineQuery }) => {
+  
+  d.asyncYoudao(inlineQuery.query, (result)=>{
+    const results = [{type: "article"
     ,id: Math.random()
     ,title: "Youdao Dictionary"
     ,input_message_content: {
-      message_text: "good"
+      message_text: result
       ,parse_mode: "HTML"
     }
                    }]
         // [{"id": "1", "input _message_content": {"message_text": "Hello"}}]
   return answerInlineQuery(results)
+  })
+  
 })
 
 bot.help((ctx) => ctx.reply('Send me some foreign text.'))
@@ -90,3 +96,5 @@ app.listen(process.env.PORT);
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
+
+//console.log(d.asyncYoudao("ingress"))
