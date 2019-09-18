@@ -121,7 +121,21 @@ function asyncYoudao(w, callback) {
     });
 }
 
+
+var oxford = require("oxford-dictionary-api");
+var app_id = process.env.OX_ID;
+var app_key = process.env.OX_KEY;
+var oxdict = new oxford(app_id, app_key);
+function ox(word, callback){
+  oxdict.find(word, function(error,data){
+  if(error) return console.log(error); 
+  callback(data); 
+});
+}
+
+
 module.exports = {
   iciba,
-  asyncYoudao
+  asyncYoudao,
+  ox
 }

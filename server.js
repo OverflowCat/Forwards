@@ -55,7 +55,10 @@ bot.on('inline_query',
     inlineQuery,
     answerInlineQuery
   }) => {
+  
     const q = inlineQuery.query
+    console.log(q)
+    //if (q.length <= 2) return; //Typed content is obviously shorter than a normal WORD
     async.parallel({
       youdao: function (done) {
         if (!(/^[a-zA-Z]+$/).test(q)) {
@@ -80,6 +83,22 @@ bot.on('inline_query',
 
       },
       
+      oxford: function (done){
+        if (false){
+        d.ox(q, result => {
+          const o = {
+              type: "article",
+              id: Math.random(),
+              title: "Oxford Dictionary",
+              description: result,
+              input_message_content: {
+                message_text: result
+              }
+          }
+          done(null, o)
+        })
+        }
+      },
       toEN: function (done) {
         if (false){
         try {
@@ -127,7 +146,7 @@ bot.on('inline_query',
     }, function (error, r) {
 
       {
-        var results = [r.youdao] //, r.toEN, r.toCN]
+        var results = [r.youdao] //r.oxford] //, r.toEN, r.toCN]
         results = results.filter(function (el) {
           return el != undefined;
         });
