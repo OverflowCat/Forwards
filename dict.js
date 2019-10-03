@@ -27,8 +27,10 @@ function iciba(ctx) {
     callback: function (error, res, done) {
       if (error) {
         console.log(error)
+        return ctx.reply(error)
       }
       else {
+        try {
         var $ = res.$
         var listtrans = $("div.content#listtrans ul")
         var netexplanations = listtrans.slice(0, 1)
@@ -57,7 +59,9 @@ function iciba(ctx) {
         var reply = "<code>" + ex + "</code>" + "\n\n<b>►网络释义</b>\n" + netex
         if (eg) reply += "<b>\n\n►例句\n</b>" + eg
         ctx.replyWithHTML(reply)
+        }catch(err){return ctx.reply(err)}
       }
+      
       done();
     }
   });
@@ -85,6 +89,7 @@ function asyncYoudao(w, callback) {
     })
     .then((res) => {
       //doStuff(res)
+      try{
       var $ = res.$
       var listtrans = $("div.content#listtrans ul")
       var netexplanations = listtrans.slice(0, 1)
@@ -113,8 +118,7 @@ function asyncYoudao(w, callback) {
       if (eg) reply += "<b>\n\n►例句\n</b>" + eg
       //ctx.replyWithHTML(reply)
       return callback(reply)
-
-
+      }catch(err) {return callback(err)}
     })
     .catch((error) => {
       console.log(error)

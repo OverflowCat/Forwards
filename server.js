@@ -44,8 +44,8 @@ function gtranslate(ctx, lang) {
     if (res.text == ctx.message.text && repeat) return gtranslate(ctx, "zh-CN")
     ctx.reply(res.text)
   }).catch(err => {
-    ctx.reply(err)
-
+    return ctx.reply(err)
+     
   });
   console.log(ctx.message)
 }
@@ -55,7 +55,6 @@ bot.on('inline_query',
     inlineQuery,
     answerInlineQuery
   }) => {
-  
     const q = inlineQuery.query
     console.log(q)
     //if (q.length <= 2) return; //Typed content is obviously shorter than a normal WORD
@@ -160,7 +159,8 @@ bot.on('inline_query',
 bot.help((ctx) => ctx.reply('Send me some foreign text.'))
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 bot.hears('hi', (ctx) => ctx.reply('Hey there'))
-bot.on('message', (ctx) => {
+
+bot.on('text', (ctx) => {
   db.update({
     uid: ctx.from
   }, {
