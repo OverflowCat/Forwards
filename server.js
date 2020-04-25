@@ -7,7 +7,6 @@ const d = require("./dict")
 const bot = new Telegraf(process.env.BOT_TOKEN)
 const nedb = require('nedb');
 
-// 实例化连接对象（不带参数默认为内存数据库）
 const db = new nedb({
   filename: './log.db',
   autoload: true
@@ -69,7 +68,7 @@ bot.on('inline_query',
               type: "article",
               id: Math.random(),
               title: "Youdao Dictionary",
-              description: result.replace(/<[^>]+>/g, ''),
+              description: result.replace(/<[^>]+>/g, '').replace("\n", " "),
               input_message_content: {
                 message_text: result,
                 parse_mode: "HTML"
@@ -83,6 +82,7 @@ bot.on('inline_query',
       },
       
       oxford: function (done){
+        done();
         if (false){
         d.ox(q, result => {
           const o = {

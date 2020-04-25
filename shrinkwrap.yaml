@@ -4,6 +4,7 @@ dependencies:
   crawler: 1.2.1
   express: 4.17.1
   nedb: 1.8.0
+  node-fetch: 2.6.0
   oxford-dictionary-api: 1.0.1
   telegraf: 3.32.0
 packages:
@@ -1197,5 +1198,6 @@ specifiers:
   crawler: ^1.2.1
   express: ^4.16.4
   nedb: ^1.8.0
+  node-fetch: ^2.6.0
   oxford-dictionary-api: ^1.0.1
   telegraf: ^3.32.0
