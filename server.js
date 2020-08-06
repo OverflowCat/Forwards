@@ -4,7 +4,7 @@ var async = require('async');
 const fs = require("fs")
 const d = require("./dict")
 //var wordfreq = fs.readFileSync('wordfreq.txt');
-const bot = new Telegraf(process.env.BOT_TOKEN)
+const bot = new Telegraf(process.env.FORWORDS)
 const nedb = require('nedb');
 
 const db = new nedb({
